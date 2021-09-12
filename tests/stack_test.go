@@ -27,6 +27,7 @@ func TestStack(t *testing.T) {
 	for v, err := s.Pop(); err == nil; v, err = s.Pop() {
 		fmt.Printf("%v\n", v)
 	}
+	s.Extend()
 	for i:= 0; i< 10; i++ {
 		s.Push(i)
 	}
