@@ -89,7 +89,7 @@ func (ll *SingleLinkedList) Delete(value interface{}) (err error) {
 			if temp == nil {
 				ll.tail = prev
 			}
-			(*nav).next = nil
+			removeNode(*nav)
 			*nav = temp
 			ll.size--
 			return
@@ -114,7 +114,7 @@ func (ll *SingleLinkedList) search(value interface{}) (nav **node, err error) {
 		}
 		nav = &(*nav).next
 	}
-	err = errors.New("value not found")
+	err = fmt.Errorf("%v - not found", value)
 	return
 }
 
@@ -125,6 +125,40 @@ func (ll *SingleLinkedList) String() (fmts string) {
 		nav = nav.next
 	}
 	return
+}
+
+func (ll *SingleLinkedList) Swap(a interface{}, b interface{}) (err error) {
+	nodeCh := make(chan **node, 2)
+	errorCh := make(chan error, 2)
+	go ll.parallelSearch(a, nodeCh, errorCh)
+	go ll.parallelSearch(b, nodeCh, errorCh)
+	navNode := make([]**node, 2)
+	idx := 0
+	var temp **node
+out:
+	for {
+		select {
+		case temp = <-nodeCh:
+			navNode[idx] = temp
+			idx++
+			if idx == 2 {
+				break out
+			}
+		case err = <-errorCh:
+			return
+		}
+	}
+	swapNode(navNode[0], navNode[1])
+	return
+}
+
+func (ll *SingleLinkedList) parallelSearch(value interface{}, nodeCh chan **node, errCh chan error) {
+	nav, err := ll.search(value)
+	if err != nil {
+		nodeCh <- nav
+	} else {
+		errCh <- err
+	}
 }
 
 func (ll *SingleLinkedList) Size() int {

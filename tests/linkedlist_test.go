@@ -7,7 +7,7 @@ import (
 	"sabariram.com/datastructure/linkedlist"
 )
 
-func deleteOperation(ll *linkedlist.SingleLinkedList, value interface{}) {
+func deleteOperation(ll linkedlist.LinkedList, value interface{}) {
 	err := ll.Delete(value)
 	if err != nil {
 		fmt.Println(err)
@@ -16,12 +16,12 @@ func deleteOperation(ll *linkedlist.SingleLinkedList, value interface{}) {
 	fmt.Printf("Deleted %v : %v \n", value, ll)
 }
 
-func insertOperation(ll *linkedlist.SingleLinkedList, value interface{}) {
+func insertOperation(ll linkedlist.LinkedList, value interface{}) {
 	ll.Insert(value)
 	fmt.Printf("Inserted %v : %v \n", value, ll)
 }
 
-func insertAtOperation(ll *linkedlist.SingleLinkedList, value interface{}, index int) {
+func insertAtOperation(ll linkedlist.LinkedList, value interface{}, index int) {
 	err := ll.InsertAt(index, value)
 	if err != nil {
 		fmt.Printf("Insert %v At %v Failed : %v \n", value, index, err)
@@ -30,7 +30,7 @@ func insertAtOperation(ll *linkedlist.SingleLinkedList, value interface{}, index
 	}
 }
 
-func insertAfterOperation(ll *linkedlist.SingleLinkedList, value interface{}, searchValue interface{}) {
+func insertAfterOperation(ll linkedlist.LinkedList, value interface{}, searchValue interface{}) {
 	err := ll.InsertAfter(searchValue, value)
 	if err != nil {
 		fmt.Printf("Insert %v After %v Failed : %v \n", value, searchValue, err)
@@ -39,7 +39,7 @@ func insertAfterOperation(ll *linkedlist.SingleLinkedList, value interface{}, se
 	}
 }
 
-func insertBeforeOperation(ll *linkedlist.SingleLinkedList, value interface{}, searchValue interface{}) {
+func insertBeforeOperation(ll linkedlist.LinkedList, value interface{}, searchValue interface{}) {
 	err := ll.InsertBefore(searchValue, value)
 	if err != nil {
 		fmt.Printf("Insert %v Before %v Failed : %v \n", value, searchValue, err)
@@ -48,7 +48,7 @@ func insertBeforeOperation(ll *linkedlist.SingleLinkedList, value interface{}, s
 	}
 }
 
-func searchOperataion(ll *linkedlist.SingleLinkedList, value interface{}) {
+func searchOperataion(ll linkedlist.LinkedList, value interface{}) {
 	err := ll.Search(value)
 	if err != nil {
 		fmt.Printf("Searched %v : %v \n", value, err)

@@ -20,13 +20,60 @@ func NewDobuleLinkedList() *DoubleLinkedList {
 func (ll *DoubleLinkedList) Insert(value interface{}) {
 	ll.mu.Lock()
 	defer ll.mu.Unlock()
-	temp := newNode(value)
 	if ll.tail == nil {
-		ll.head = temp
-		ll.tail = temp
+		ll.insert(&ll.head, value)
 	} else {
-		ll.tail.next = temp
-		ll.tail = temp
+		ll.insert(&ll.tail.next, value)
+	}
+
+}
+
+func (ll *DoubleLinkedList) InsertAt(index int, value interface{}) (err error) {
+	ll.mu.Lock()
+	defer ll.mu.Unlock()
+	next := &ll.head
+	for i := 0; i < index; i++ {
+		if *next != nil {
+			next = &(*next).next
+		} else {
+			err = errors.New("end of list reached")
+			return
+		}
+	}
+	ll.insert(next, value)
+	return
+}
+
+func (ll *DoubleLinkedList) InsertAfter(searchValue interface{}, value interface{}) (err error) {
+	ll.mu.Lock()
+	defer ll.mu.Unlock()
+	next, err := ll.search(searchValue)
+	if err != nil {
+		return
+	}
+	ll.insert(&(*next).next, value)
+	return
+}
+
+func (ll *DoubleLinkedList) InsertBefore(searchValue interface{}, value interface{}) (err error) {
+	ll.mu.Lock()
+	defer ll.mu.Unlock()
+	next, err := ll.search(searchValue)
+	if err != nil {
+		return
+	}
+	ll.insert(next, value)
+	return
+}
+
+func (ll *DoubleLinkedList) insert(prev **node, value interface{}) {
+	insert_node := newNode(value)
+	temp := *prev
+	*prev = insert_node
+	if temp != nil {
+		insert_node.next = temp
+	} else {
+		ll.tail = insert_node
 	}
 	ll.size++
 }
@@ -55,12 +102,17 @@ func (ll *DoubleLinkedList) Delete(value interface{}) (err error) {
 }
 
 func (ll *DoubleLinkedList) Search(value interface{}) (err error) {
-	nav := ll.head
-	for nav != nil {
-		if nav.value == value {
+	_, err = ll.search(value)
+	return
+}
+
+func (ll *DoubleLinkedList) search(value interface{}) (nav **node, err error) {
+	nav = &ll.head
+	for *nav != nil {
+		if (*nav).value == value {
 			return
 		}
-		nav = nav.next
+		nav = &(*nav).next
 	}
 	err = errors.New("value not found")
 	return
@@ -73,4 +125,8 @@ func (ll *DoubleLinkedList) String() (fmts string) {
 		nav = nav.next
 	}
 	return
+}
+
+func (ll *DoubleLinkedList) Size() int {
+	return ll.size
 }
