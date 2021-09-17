@@ -131,6 +131,8 @@ func (ll *SingleLinkedList) String() (fmts string) {
 }
 
 func (ll *SingleLinkedList) Swap(a interface{}, b interface{}) (err error) {
+	ll.mu.Lock()
+	defer ll.mu.Unlock()
 	nodeCh := make(chan **node, 2)
 	errorCh := make(chan error, 2)
 	go ll.parallelSearch(a, nodeCh, errorCh)

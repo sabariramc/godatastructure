@@ -10,7 +10,7 @@ import (
 func deleteOperation(ll linkedlist.LinkedList, value interface{}) {
 	err := ll.Delete(value)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("Delete %v failed: %v \n", value, err)
 		return
 	}
 	fmt.Printf("Deleted %v : %v \n", value, ll)
@@ -68,6 +68,47 @@ func swapOperation(ll linkedlist.LinkedList, valueA interface{}, valueB interfac
 
 func TestSinglyLinkedList(t *testing.T) {
 	ll := linkedlist.NewSingleLinkedList()
+	deleteOperation(ll, 123)
+	searchOperataion(ll, 1)
+	insertOperation(ll, 1)
+	insertOperation(ll, 2)
+	insertOperation(ll, 3)
+	searchOperataion(ll, 1)
+	deleteOperation(ll, 1)
+	insertOperation(ll, 4)
+	insertOperation(ll, 5)
+	insertOperation(ll, 6)
+	deleteOperation(ll, 3)
+	deleteOperation(ll, 2)
+	deleteOperation(ll, 6)
+	insertOperation(ll, 7)
+	insertOperation(ll, 8)
+	insertOperation(ll, 9)
+	deleteOperation(ll, 7)
+	searchOperataion(ll, 3)
+	searchOperataion(ll, 4)
+	searchOperataion(ll, 9)
+	searchOperataion(ll, 8)
+	insertAtOperation(ll, 1, 0)
+	insertAtOperation(ll, 7, 3)
+	insertAtOperation(ll, 10, 6)
+	insertAtOperation(ll, 11, 10)
+	insertAfterOperation(ll, 20, 10)
+	insertBeforeOperation(ll, -1, 1)
+	insertBeforeOperation(ll, 0, 1)
+	insertAfterOperation(ll, 11, 10)
+	insertBeforeOperation(ll, 0, -2)
+	insertAfterOperation(ll, 11, 100)
+	swapOperation(ll, 1, 4)
+	swapOperation(ll, 1, 4)
+	swapOperation(ll, -1, 20)
+	swapOperation(ll, -1, 20)
+	swapOperation(ll, 0, 5)
+	swapOperation(ll, 0, 5)
+}
+
+func TestDoubleLinkedList(t *testing.T) {
+	ll := linkedlist.NewDoubleLinkedList()
 	deleteOperation(ll, 123)
 	searchOperataion(ll, 1)
 	insertOperation(ll, 1)
