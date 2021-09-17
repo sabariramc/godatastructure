@@ -57,6 +57,15 @@ func searchOperataion(ll linkedlist.LinkedList, value interface{}) {
 	}
 }
 
+func swapOperation(ll linkedlist.LinkedList, valueA interface{}, valueB interface{}) {
+	err := ll.Swap(valueA, valueB)
+	if err != nil {
+		fmt.Printf("Swap %v, %v Failed: %v \n", valueA, valueB, err)
+	} else {
+		fmt.Printf("Swaped %v, %v : %v \n", valueA, valueB, ll)
+	}
+}
+
 func TestSinglyLinkedList(t *testing.T) {
 	ll := linkedlist.NewSingleLinkedList()
 	deleteOperation(ll, 123)
@@ -90,4 +99,10 @@ func TestSinglyLinkedList(t *testing.T) {
 	insertAfterOperation(ll, 11, 10)
 	insertBeforeOperation(ll, 0, -2)
 	insertAfterOperation(ll, 11, 100)
+	swapOperation(ll, 1, 4)
+	swapOperation(ll, 1, 4)
+	swapOperation(ll, -1, 20)
+	swapOperation(ll, -1, 20)
+	swapOperation(ll, 0, 5)
+	swapOperation(ll, 0, 5)
 }

@@ -120,6 +120,9 @@ func (ll *SingleLinkedList) search(value interface{}) (nav **node, err error) {
 
 func (ll *SingleLinkedList) String() (fmts string) {
 	nav := ll.head
+	if ll.head != nil {
+		fmts += fmt.Sprintf("Head ptr at %v, Tail ptr at %v : ", ll.head.value, ll.tail.value)
+	}
 	for nav != nil {
 		fmts += fmt.Sprintf("%v -> ", nav.value)
 		nav = nav.next
@@ -133,28 +136,36 @@ func (ll *SingleLinkedList) Swap(a interface{}, b interface{}) (err error) {
 	go ll.parallelSearch(a, nodeCh, errorCh)
 	go ll.parallelSearch(b, nodeCh, errorCh)
 	navNode := make([]**node, 2)
-	idx := 0
 	var temp **node
-out:
-	for {
+	var isError bool
+	for i := 0; i < 2; i++ {
 		select {
 		case temp = <-nodeCh:
-			navNode[idx] = temp
-			idx++
-			if idx == 2 {
-				break out
-			}
+			navNode[i] = temp
 		case err = <-errorCh:
-			return
+			isError = true
 		}
 	}
+	if isError {
+		return
+	}
+	if navNode[0] == navNode[1] {
+		err = errors.New("cant swap same node")
+		return
+	}
 	swapNode(navNode[0], navNode[1])
+	if (*navNode[0]).next == nil {
+		ll.tail = *navNode[0]
+	}
+	if (*navNode[1]).next == nil {
+		ll.tail = *navNode[1]
+	}
 	return
 }
 
 func (ll *SingleLinkedList) parallelSearch(value interface{}, nodeCh chan **node, errCh chan error) {
 	nav, err := ll.search(value)
-	if err != nil {
+	if err == nil {
 		nodeCh <- nav
 	} else {
 		errCh <- err
