@@ -1,14 +1,13 @@
 package tree
 
 type node struct {
-	index         interface{}
-	value         interface{}
-	left          *node
-	right         *node
-	colour        colour
-	balanceFactor int
-	leftHeight    int
-	rightHeight   int
+	index       interface{}
+	value       interface{}
+	left        *node
+	right       *node
+	colour      colour
+	leftHeight  int
+	rightHeight int
 }
 
 func newNode(index interface{}, value *interface{}) *node {
