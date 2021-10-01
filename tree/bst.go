@@ -96,8 +96,10 @@ func (bt *BinarySearchTree) getSuccessor(temp *node) *node {
 		*nav = temp.left
 		return temp
 	} else if left == nil {
+		temp.right = nil
 		return right
 	} else {
+		temp.left = nil
 		return left
 	}
 }
@@ -108,18 +110,6 @@ func (bt *BinarySearchTree) String() (fmts string) {
 	fmts += fmt.Sprintf("Pre order index: %v\n", getIndexLine(preOrderTraversal, bt.root, bt.size))
 	fmts += fmt.Sprintf("Post order index: %v\n", getIndexLine(postOrderTraversal, bt.root, bt.size))
 	return
-}
-
-func getIndexLine(traversal traversalFunction, nav *node, size int) string {
-	ch := make(chan *interface{}, size)
-	defer close(ch)
-	traversal(nav, ch)
-	traverseResponse := ""
-	for i := 0; i < size; i++ {
-		j := <-ch
-		traverseResponse += fmt.Sprintf("%v -> ", *j)
-	}
-	return traverseResponse
 }
 
 func (bt *BinarySearchTree) Validate() error {

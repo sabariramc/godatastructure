@@ -30,7 +30,7 @@ func deleteNode(tr tree.Tree, index interface{}) {
 
 func TestBinarySearchTree(t *testing.T) {
 	tr := tree.NewBinarySearchTree(compare)
-	l := []int{10, 5, 2, 4, 1, 3, 8, 6, 7, 9, 15, 12, 13, 11, 14, 18, 16, 17, 19}
+	l := []int{10, 5, 2, 4, 1, 3, 8, 6, 7, 9, 15, 12, 13, 11, 14, 18, 16, 17, 19, -1}
 	for _, v := range l {
 		tr.Insert(v, nil)
 	}
